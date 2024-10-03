@@ -3,7 +3,6 @@ package com.example.carrito
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
-import android.os.Parcelable
 
 class CartActivity : AppCompatActivity() {
 
