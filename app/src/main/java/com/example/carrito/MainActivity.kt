@@ -1,7 +1,9 @@
 package com.example.carrito
+
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button  // Importar el botón
+import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -46,5 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun addToCart(product: Product) {
         cartList.add(product)
+        Toast.makeText(this, "${product.name} agregado al carrito", Toast.LENGTH_SHORT).show()
     }
 }
+

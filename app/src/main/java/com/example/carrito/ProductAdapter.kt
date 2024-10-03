@@ -43,14 +43,14 @@ class ProductAdapter(
             productName.text = product.name
             productPrice.text = product.price.toString()
 
-            // Verificar si el listener es null antes de intentar asignar el clic
+            // Configurar el botón de agregar al carrito
             if (listener != null) {
                 addToCartButton.setOnClickListener {
                     listener.onAddToCartClick(product)
                 }
+                addToCartButton.visibility = View.VISIBLE // Asegúrate de que el botón sea visible
             } else {
-                // Si no hay listener, ocultar el botón o hacer otra acción
-                addToCartButton.visibility = View.GONE
+                addToCartButton.visibility = View.GONE // Ocultar el botón si no hay listener
             }
         }
     }
