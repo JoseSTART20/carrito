@@ -1,22 +1,38 @@
 package com.example.carrito
 
 import android.os.Bundle
+import android.util.Log  // Importar Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class CartActivity : AppCompatActivity() {
 
+    private var cartList: ArrayList<Product>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_cart) // Vincula con el layout de la actividad del carrito
+        setContentView(R.layout.activity_cart)
 
-        // Obtener la lista de productos del carrito
-        val cartList = intent.getParcelableArrayListExtra<Product>("cartList")
+        // Recuperar la lista del intent
+        cartList = intent.getParcelableArrayListExtra<Product>("cartList")
 
-        // Mostrar la lista de productos en un TextView (puedes cambiar esto a un RecyclerView)
-        val textViewCart: TextView = findViewById(R.id.textViewCart)
+        // Depuración: Verificar si la lista no es nula y mostrar un mensaje en Logcat
+        if (cartList == null || cartList!!.isEmpty()) {
+            Toast.makeText(this, "El carrito está vacío.", Toast.LENGTH_SHORT).show()
+        } else {
+            // Depuración: Mostrar en log el tamaño de la lista
+            Log.d("CartActivity", "Tamaño del carrito: ${cartList!!.size}")
+        }
 
-        // Mostrar los productos del carrito
-        textViewCart.text = cartList?.joinToString("\n") { "${it.name} - \$${it.price}" }
+        // Configurar el RecyclerView para mostrar los productos del carrito
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerViewCart)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        // Crear un adaptador para el carrito
+        val adapter = ProductAdapter(cartList!!) // Asegúrate de usar el adaptador correcto
+        recyclerView.adapter = adapter
     }
 }
+

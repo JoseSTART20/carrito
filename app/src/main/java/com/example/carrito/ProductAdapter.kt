@@ -8,8 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class ProductAdapter(
-    private val productList: List<Product>, // Lista de productos
-    private val listener: OnProductClickListener // Interfaz para manejar eventos de clic
+    private val productList: List<Product>,
+    private val listener: OnProductClickListener? = null // Hacer listener opcional
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     // Interfaz para manejar el clic en "Agregar al Carrito"
@@ -17,13 +17,13 @@ class ProductAdapter(
         fun onAddToCartClick(product: Product)
     }
 
-    // Vinculamos cada vista con el layout de item_product
+    // Crear el ViewHolder y vincularlo con el layout del item
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_product, parent, false)
         return ProductViewHolder(view)
     }
 
-    // Vinculamos los datos de cada producto con su vista correspondiente
+    // Vincular datos con vistas
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val product = productList[position]
         holder.bind(product)
@@ -32,7 +32,7 @@ class ProductAdapter(
     // Cantidad de productos a mostrar
     override fun getItemCount(): Int = productList.size
 
-    // Clase interna que contiene las vistas de cada producto
+    // ViewHolder para manejar las vistas de cada producto
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val productName: TextView = itemView.findViewById(R.id.productName)
         private val productPrice: TextView = itemView.findViewById(R.id.productPrice)
@@ -42,8 +42,15 @@ class ProductAdapter(
         fun bind(product: Product) {
             productName.text = product.name
             productPrice.text = product.price.toString()
-            addToCartButton.setOnClickListener {
-                listener.onAddToCartClick(product)
+
+            // Verificar si el listener es null antes de intentar asignar el clic
+            if (listener != null) {
+                addToCartButton.setOnClickListener {
+                    listener.onAddToCartClick(product)
+                }
+            } else {
+                // Si no hay listener, ocultar el botón o hacer otra acción
+                addToCartButton.visibility = View.GONE
             }
         }
     }
